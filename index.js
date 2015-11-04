@@ -34,7 +34,7 @@ var parser = (function() {
         for (var i = 0; i < data.length; i += 4) {
             var item = {};
             item[id] = data[i].trim();
-            item[startTtime] = useMs ? timeMs(data[i + 1].trim()) : data[i + 1].trim();
+            item[startTime] = useMs ? timeMs(data[i + 1].trim()) : data[i + 1].trim();
             item[endTime] = useMs ? timeMs(data[i + 2].trim()) : data[i + 2].trim();
             item[text] = data[i + 3].trim()
             items.push(item);
