@@ -10,26 +10,34 @@ var parser = (function() {
      *     text: `Text of subtitle`
      * }]
      *
-     * @param  {String}  data SubRip suntitles string
+     * @param  {String}  data SubRip subtitles content
      * @param  {Boolean} ms   Optional: use milliseconds for startTime and endTime
+     * @param  {Array}   fieldNames Optional: alternate fieldnames for [startTime, endTime, id, text]
      * @return {Array}  
      */
-    pItems.fromSrt = function(data, ms) {
+    pItems.fromSrt = function(data, ms, fieldNames) {
         var useMs = ms ? true : false;
-
+        
+        
+        var startTime = fieldNames ? fieldNames[0] : 'startTime';
+        var endTime = fieldNames ? fieldNames[1] : 'endTime';
+        var id = fieldNames ? fieldNames[2] : 'id';
+        var text = fieldNames ? fieldNames[3] : 'text';
+        
         data = data.replace(/\r/g, '');
         var regex = /(\d+)\n(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})/g;
         data = data.split(regex);
         data.shift();
 
         var items = [];
+
         for (var i = 0; i < data.length; i += 4) {
-            items.push({
-                id: data[i].trim(),
-                startTime: useMs ? timeMs(data[i + 1].trim()) : data[i + 1].trim(),
-                endTime: useMs ? timeMs(data[i + 2].trim()) : data[i + 2].trim(),
-                text: data[i + 3].trim()
-            });
+            var item = {};
+            item[id] = data[i].trim();
+            item[startTtime] = useMs ? timeMs(data[i + 1].trim()) : data[i + 1].trim();
+            item[endTime] = useMs ? timeMs(data[i + 2].trim()) : data[i + 2].trim();
+            item[text] = data[i + 3].trim()
+            items.push(item);
         }
 
         return items;
